@@ -103,3 +103,9 @@ theme: vexo
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
   type: ''
+
+# Embeding an image using markdown
+post_asset_forder: true
+marked: 
+  prependRoot: true
+  postAsset: true

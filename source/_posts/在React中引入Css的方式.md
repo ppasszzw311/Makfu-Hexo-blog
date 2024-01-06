@@ -1,7 +1,7 @@
 ---
 title: 在React中引入Css的方式
 date: 2024-01-04 12:19:53
-tags: React
+tags: [React, Css]
 ---
 
 > 紀錄自己在開發react時遇到的問題

@@ -34,8 +34,144 @@ https://hackmd.io/@metal35x/r14R56nXU
 > * 多載(Overload)
 > * 覆寫(Override)
 > * 多型(Polymorphism)
+>
 
-多型的例子，例如說老闆說要找一個人會要寫程式，具有程式開發能力的人，他認為的程式人是這樣的...
+1. 建立一個abstract的Door類別，裡面有Open(開門)與Close(關門)這兩個虛擬方法可以用
+```C#
+abstract class Door
+{
+    public virtual void Open()
+    {
+        Console.WriteLine("Open Door");
+    }
+    public virtual void Close()
+    {
+        Console.WriteLine("Close Door");
+    }
+}
+```
+ 
+2. 建立一個HorizontalDoor類別，它繼承了原先的Door，所以它也有Open與Close這兩個方法可以用
+
+```C#
+class HorizontalDoor : Door { }
+```
+
+3. 建立一個VerticalDoor類別，它也繼承了Door，可是我在裡面override了原先的Open與Close，另外實作其方法
+```C#
+class VerticalDoor : Door
+{
+    public override void Open()
+    {
+        Console.WriteLine("Open vertically");
+    }
+    public override void Close()
+    {
+        Console.WriteLine("Close vertically");
+    }
+}
+```
+ 
+4. 建立一個IAlarm介面，裡面定義了Alert這個方法
+
+```C#
+interface IAlarm
+{
+    void Alert();
+}
+```
+
+
+5. 建立一個Alarm類別，它繼承了IAlarm，並在裡面實作Alert
+```C#
+class Alarm : IAlarm
+{
+    public void Alert()
+    {
+        Console.WriteLine("Ring ~~");
+    }
+}
+```
+
+
+ 
+6. 建立一個AlarmDoor類別，它繼承了Door，同時在裡面使用了Alarm類別的Alert方法
+```C#
+class AlarmDoor : Door
+{
+    private IAlarm _alarm;
+
+    public AlarmDoor()
+    {
+        _alarm = new Alarm();
+    }
+
+    public void Alert()
+    {
+        _alarm.Alert();
+    }
+}
+```
+
+7. 建立一個AutoAlarmDoor類別，它繼承了AlarmDoor，並覆寫了原本的Open方法，裡面呼叫base.Open方法並接著呼叫Alert方法
+
+```C#
+class AutoAlarmDoor : AlarmDoor
+{
+    public override void Open()
+    {
+        base.Open();
+        Alert();
+    }
+}
+```
+
+8. 建立一個DoorController類別，這個類別是用來控制管理所有的Door
+```C#
+class DoorController
+{
+    protected List<Door> _dootList = new List<Door>();
+
+    public void AddDoor(Door Door)
+    {
+        _dootList.Add(Door);
+    }
+
+    public void OpenDoor()
+    {
+        foreach (var item in _dootList)
+        {
+            item.Open();
+        }
+    }
+}
+```
+
+
+ 
+完成 !!
+```C#
+static void Main(string[] args)
+{
+    DoorController dc = new DoorController();
+    dc.AddDoor(new HorizontalDoor());
+    dc.AddDoor(new VerticalDoor());
+    dc.AddDoor(new AlarmDoor());
+    dc.AddDoor(new AutoAlarmDoor());
+
+    dc.OpenDoor();
+
+    Console.ReadLine();
+}
+```
+
+* 注意事項
+  * abstract method 不會有程式內容
+  * abstract method 繼承後，一定要 override
+  * virtual method 一定要有程式內容
+  * 宣告為 virtual 的 method，繼承後才可以進行 override
+  * 設定為 virtual 的 method，沒有一定要 override
+
 
 ```c#
 public class Programmer
